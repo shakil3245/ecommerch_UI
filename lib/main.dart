@@ -1,3 +1,5 @@
+import 'package:craftybay/ui/screen/stateManagement/authcontroller.dart';
+import 'package:craftybay/ui/screen/stateManagement/user_auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'ui/screen/splashScreen.dart';
@@ -24,3 +26,11 @@ class CraftyBay extends StatelessWidget{
   }
 }
 
+class GetxBindings extends Bindings{
+  @override
+  void dependencies() {
+    Get.put(UserAuthController());
+
+  }
+
+}

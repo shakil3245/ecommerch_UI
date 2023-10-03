@@ -1,25 +1,53 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../widgets/porductCard.dart';
+import '../../widgets/productCardsForAll.dart';
+import '../stateManagement/listProductByCategoryController.dart';
 
-class ProdeuctListScreen extends StatelessWidget {
-  const ProdeuctListScreen({Key? key}) : super(key: key);
+class ProductListScreen extends StatefulWidget {
+  final int categoryId;
+
+  const ProductListScreen({Key? key, required this.categoryId})
+      : super(key: key);
+
+  @override
+  State<ProductListScreen> createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends State<ProductListScreen> {
+  ListProductByCategoryController _listProductByCategoryController = Get.put(ListProductByCategoryController());
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {_listProductByCategoryController.getListProductByCategory(widget.categoryId);});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0.2,
-        leading: Icon(Icons.arrow_back_ios,color: Colors.black,),
-        title: Text("Products"),
+        title: const Text('Products'),
+        leading: const BackButton(
+          color: Colors.black,
+        ),
       ),
-      body: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 0.8,
-      ), itemBuilder: (context,index){
-        return const productcard();
+      body: GetBuilder<ListProductByCategoryController>(builder: (productController) {
+        if (productController.listProductbyCategoryInProgress) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, childAspectRatio: 0.75),
+          itemCount:
+          productController.listProductByCategoryModel.products?.length ?? 0,
+          itemBuilder: (context, index) {
+            return ProductCard(product: productController.listProductByCategoryModel.products![index],
+           
+            );
+          },
+        );
       }),
     );
   }

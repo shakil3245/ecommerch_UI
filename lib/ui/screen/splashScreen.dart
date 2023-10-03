@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:craftybay/ui/screen/stateManagement/authcontroller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'emailVarificationScreen.dart';
@@ -16,9 +19,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2)).then((value) =>
-    Get.off(BottomNavBar()),
-    );
+    Future.delayed(const Duration(seconds: 1)).then((value)  {
+      Get.off(const BottomNavBar());
+      /*final bool loginState = await Get.find<AuthController>().isLoggedIn();
+      log(loginState.toString());
+      if (loginState) {
+        Get.off(const BottomNavBar());
+      } else {
+        Get.off(const EmailVerificationScreen());
+      }*/
+    });
   }
   @override
   Widget build(BuildContext context) {

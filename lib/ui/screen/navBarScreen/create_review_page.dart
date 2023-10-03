@@ -2,10 +2,20 @@ import 'package:craftybay/ui/screen/utils/appColor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/elevetedButton.dart';
+import '../stateManagement/CartController.dart';
+import '../stateManagement/authcontroller.dart';
+import '../stateManagement/createReviewController.dart';
 
 class CreateReviewPage extends StatelessWidget {
-  const CreateReviewPage({Key? key}) : super(key: key);
 
+   CreateReviewPage({Key? key, required this.productId}) : super(key: key);
+   final int productId;
+
+  TextEditingController _firstNameETController = TextEditingController();
+  TextEditingController _lastNameETController = TextEditingController();
+  TextEditingController _commentETController = TextEditingController();
+   CreateReviewController _reviewController = Get.put(CreateReviewController());
+   AuthController _authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +34,7 @@ class CreateReviewPage extends StatelessWidget {
           child: Column(children: [
             SizedBox(height: 20,),
                 TextField(
+                  controller:_firstNameETController ,
                   decoration: InputDecoration(
                     hintText: "First Name",
                     focusedBorder: OutlineInputBorder(
@@ -42,6 +53,7 @@ class CreateReviewPage extends StatelessWidget {
                 ),
                 SizedBox(height: 15,),
                 TextField(
+                  controller: _lastNameETController,
                   decoration: InputDecoration(
                     hintText: "Last Name",
                     focusedBorder: OutlineInputBorder(
@@ -61,6 +73,7 @@ class CreateReviewPage extends StatelessWidget {
             SizedBox(height: 15,),
             TextField(
               maxLines: 10,
+              controller: _commentETController,
               decoration: InputDecoration(
                 hintText: "Write Review",
                 focusedBorder: OutlineInputBorder(
@@ -78,7 +91,20 @@ class CreateReviewPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20,),
-            elevetedButton(Title: 'Submit', onTap: () {  },),
+            GetBuilder<CreateReviewController>(
+              builder: (createReview) {
+                return elevetedButton(Title: 'Submit', onTap: () async {
+                  final result = await _authController.checkAuthValidation();
+                  if(result){
+                    _reviewController.CreateReview(productId,_commentETController.text);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sucessfully Added!")));
+
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to add reviews!",),backgroundColor: Colors.red,));
+                  }
+                },);
+              }
+            ),
 
           ],),
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/categorycard.dart';
-import '../../widgets/porductCard.dart';
+import '../../widgets/porductCardforCart.dart';
 
 class WishScreen extends StatefulWidget {
   const WishScreen({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class _WishScreenState extends State<WishScreen> {
             childAspectRatio: 0.8,
           ),
           itemBuilder: (context,_){
-            return productcard();
+            return  Text("");//productcard();
           },),
     );
   }

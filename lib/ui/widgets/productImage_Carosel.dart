@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import '../screen/utils/appColor.dart';
 
 class productImageCarosel extends StatelessWidget {
+  final List<String> images;
+
 
   final ValueNotifier<int> _carrentindex = ValueNotifier(0);
+
+   productImageCarosel({super.key, required this.images});
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +30,18 @@ class productImageCarosel extends StatelessWidget {
             enlargeFactor: 0.2,
             scrollDirection: Axis.horizontal,
           ),
-          items: [1,2,3,4].map((i) {
+          items: images.map((images) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.grey,
+                    image: DecorationImage(
+                      image: NetworkImage(images),
+                    )
                   ),
-                  child: Center(
-                    child: Text('text $i', style: TextStyle(fontSize: 16.0),),
-                  ),
+                  
                 );
               },
             );
@@ -53,7 +58,7 @@ class productImageCarosel extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for(int i=0;i<4;i++)
+                        for(int i=0;i<images.length;i++)
                           Padding(
                               padding: const EdgeInsets.all(4),
                               child:Container(

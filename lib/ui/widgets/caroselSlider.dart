@@ -1,9 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:craftybay/data/models/sliderModel.dart';
 import 'package:flutter/material.dart';
 
 import '../screen/utils/appColor.dart';
 
 class caroselSlider extends StatelessWidget {
+final SliderDataModel sliderDataModel;
+
+ caroselSlider({super.key, required this.sliderDataModel});
 
   final ValueNotifier<int> _carrentindex = ValueNotifier(0);
 
@@ -26,19 +30,20 @@ class caroselSlider extends StatelessWidget {
             enlargeFactor: 0.2,
             scrollDirection: Axis.horizontal,
           ),
-          items: [1,2,3,4].map((i) {
+          items: sliderDataModel.sliders!.map((i) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
                     width: MediaQuery.of(context).size.width,
                     margin: EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
-                        color: Colors.amber,
+                        color: primaryColor,
                         borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: NetworkImage(i.image ?? ""),
+                      )
                     ),
-                    child: Center(
-                      child: Text('text $i', style: TextStyle(fontSize: 16.0),),
-                    ),
+
                 );
               },
             );
